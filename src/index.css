@@ -8,84 +8,60 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Anime-inspired vibrant health theme */
-    --background: 220 20% 98%;
-    --foreground: 220 15% 20%;
+    /* Apple Fitness-inspired dark theme with vibrant accents */
+    --background: 0 0% 7%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 20%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 20%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 98%;
 
-    /* Vibrant coral/orange primary */
-    --primary: 12 100% 65%;
+    /* Vibrant neon green (Apple Fitness Move ring) */
+    --primary: 142 76% 36%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 12 100% 75%;
+    --primary-glow: 142 76% 46%;
 
-    /* Turquoise secondary */
-    --secondary: 175 65% 60%;
-    --secondary-foreground: 0 0% 100%;
+    /* Electric cyan (Apple Fitness Exercise ring) */
+    --secondary: 180 100% 50%;
+    --secondary-foreground: 0 0% 0%;
 
-    /* Soft muted tones */
-    --muted: 220 15% 95%;
-    --muted-foreground: 220 10% 50%;
+    /* Dark muted tones */
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
 
-    /* Rose pink accent */
-    --accent: 330 100% 55%;
+    /* Hot pink accent (Apple Fitness Stand ring) */
+    --accent: 330 100% 60%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 90%;
-    --input: 220 15% 95%;
-    --ring: 12 100% 65%;
+    --border: 0 0% 18%;
+    --input: 0 0% 15%;
+    --ring: 142 76% 36%;
 
-    --radius: 1rem;
+    --radius: 1.25rem;
 
-    /* Anime gradient backgrounds */
-    --gradient-warm: linear-gradient(135deg, hsl(12 100% 65%) 0%, hsl(330 100% 55%) 100%);
-    --gradient-cool: linear-gradient(135deg, hsl(175 65% 60%) 0%, hsl(220 70% 65%) 100%);
-    --gradient-soft: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 20% 98%) 100%);
+    /* Additional fitness ring colors */
+    --ring-move: 142 76% 36%;
+    --ring-exercise: 180 100% 50%;
+    --ring-stand: 330 100% 60%;
+    --ring-calories: 25 95% 53%;
 
-    /* Playful shadows */
-    --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08);
-    --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.12);
-    --shadow-glow: 0 0 20px hsl(12 100% 65% / 0.3);
+    /* Vibrant gradients */
+    --gradient-move: linear-gradient(135deg, hsl(142 76% 36%) 0%, hsl(142 76% 46%) 100%);
+    --gradient-exercise: linear-gradient(135deg, hsl(180 100% 50%) 0%, hsl(190 100% 60%) 100%);
+    --gradient-stand: linear-gradient(135deg, hsl(330 100% 60%) 0%, hsl(340 100% 70%) 100%);
+
+    /* Glowing shadows */
+    --shadow-glow-green: 0 0 30px hsl(142 76% 36% / 0.4);
+    --shadow-glow-cyan: 0 0 30px hsl(180 100% 50% / 0.4);
+    --shadow-glow-pink: 0 0 30px hsl(330 100% 60% / 0.4);
 
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .dark {
-    --background: 220 25% 12%;
-    --foreground: 220 10% 95%;
-
-    --card: 220 20% 15%;
-    --card-foreground: 220 10% 95%;
-
-    --popover: 220 20% 15%;
-    --popover-foreground: 220 10% 95%;
-
-    --primary: 12 100% 65%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 175 55% 50%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 220 20% 20%;
-    --muted-foreground: 220 10% 60%;
-
-    --accent: 330 90% 55%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 220 15% 25%;
-    --input: 220 15% 20%;
-    --ring: 12 100% 65%;
   }
 }
 
