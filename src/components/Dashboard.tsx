@@ -30,15 +30,9 @@ const Dashboard = ({ currentCalories, targetCalories, burnSuggestion, logs }: Da
   const totalMeals = logs.length;
   const avgCaloriesPerMeal = totalMeals > 0 ? Math.round(currentCalories / totalMeals) : 0;
 
-  // Mock data for weekly trend (you can expand this to store real weekly data)
+  // Only show today's actual data
   const weeklyData = [
-    { day: "Mon", calories: currentCalories * 0.8 },
-    { day: "Tue", calories: currentCalories * 0.9 },
-    { day: "Wed", calories: currentCalories * 1.1 },
-    { day: "Thu", calories: currentCalories * 0.95 },
-    { day: "Fri", calories: currentCalories * 1.05 },
-    { day: "Sat", calories: currentCalories },
-    { day: "Today", calories: currentCalories },
+    { day: "Today", calories: currentCalories, target: targetCalories },
   ];
 
   // Meal distribution data
@@ -173,7 +167,7 @@ const Dashboard = ({ currentCalories, targetCalories, burnSuggestion, logs }: Da
                 />
                 <Line
                   type="monotone"
-                  dataKey={() => targetCalories}
+                  dataKey="target"
                   stroke="hsl(var(--primary))"
                   strokeWidth={2}
                   strokeDasharray="5 5"
