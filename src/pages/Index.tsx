@@ -6,7 +6,7 @@ import FoodLogger from "@/components/FoodLogger";
 import Dashboard from "@/components/Dashboard";
 import { Auth } from "@/components/Auth";
 import { supabase } from "@/integrations/supabase/client";
-import { Activity, LogOut } from "lucide-react";
+import { Activity, LogOut, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import LoadingAnimation from "@/components/LoadingAnimation";
@@ -14,6 +14,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getAvatarColor, getUserInitials } from "@/lib/avatarUtils";
 
 interface Goal {
+  id?: string;
   currentWeight: number;
   targetWeight: number;
   dailyCalorieTarget: number;
@@ -72,6 +73,7 @@ const Index = () => {
     if (goals && goals.length > 0) {
       const goal = goals[0];
       setUserGoal({
+        id: goal.id,
         currentWeight: goal.current_weight,
         targetWeight: goal.target_weight,
         dailyCalorieTarget: goal.target_calories,
@@ -103,30 +105,55 @@ const Index = () => {
   const handleGoalSet = async (goal: Goal) => {
     if (!session?.user) return;
 
-    const { error } = await supabase.from("user_goals").insert({
+    // Check if goal already exists
+    if (userGoal) {
+      toast.error("You already have a goal! Delete it first to create a new one.");
+      return;
+    }
+
+    const { data, error } = await supabase.from("user_goals").insert({
       user_id: session.user.id,
       current_weight: goal.currentWeight,
       target_weight: goal.targetWeight,
       target_calories: goal.dailyCalorieTarget,
       burn_suggestion: goal.burnSuggestion,
-    });
+    }).select().single();
 
     if (error) {
       toast.error("Failed to save goal");
       return;
     }
 
-    setUserGoal(goal);
+    setUserGoal({ ...goal, id: data.id });
     setActiveTab("log");
     toast.success("Goal saved!");
   };
 
+  const handleDeleteGoal = async () => {
+    if (!session?.user || !userGoal?.id) return;
+
+    const { error } = await supabase
+      .from("user_goals")
+      .delete()
+      .eq("id", userGoal.id);
+
+    if (error) {
+      toast.error("Failed to delete goal");
+      return;
+    }
+
+    setUserGoal(null);
+    setDailyLogs([]);
+    toast.success("Goal and all meal logs deleted!");
+  };
+
   const handleMealLogged = async (log: DailyLog) => {
-    if (!session?.user) return;
+    if (!session?.user || !userGoal?.id) return;
 
     const today = new Date().toISOString().split("T")[0];
     const { error } = await supabase.from("meal_logs").insert({
       user_id: session.user.id,
+      goal_id: userGoal.id,
       meal_text: log.text,
       calories: log.calories,
       suggestion: log.suggestion,
@@ -237,8 +264,17 @@ const Index = () => {
               <div className="space-y-4 sm:space-y-6">
                 <Card className="border-primary/20 bg-gradient-to-br from-card via-card to-primary/5 backdrop-blur-sm shadow-xl overflow-hidden relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-50"></div>
-                  <CardHeader className="relative">
+                  <CardHeader className="relative flex flex-row items-center justify-between">
                     <CardTitle className="text-xl sm:text-2xl font-bold">Current Goal</CardTitle>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={handleDeleteGoal}
+                      className="gap-2 shadow-lg hover:shadow-xl transition-all"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      <span className="hidden sm:inline">Delete Goal</span>
+                    </Button>
                   </CardHeader>
                   <CardContent className="space-y-3 relative">
                     <div className="flex items-center gap-2 p-3 rounded-xl bg-gradient-to-r from-secondary/10 to-primary/10 border border-primary/20">
@@ -250,6 +286,9 @@ const Index = () => {
                     <div className="flex items-center gap-2 p-3 rounded-xl bg-gradient-to-r from-accent/10 to-secondary/10 border border-accent/20">
                       <span className="text-sm sm:text-base">Daily Target:</span>
                       <span className="font-bold text-accent text-lg sm:text-xl">{userGoal.dailyCalorieTarget} kcal</span>
+                    </div>
+                    <div className="text-xs sm:text-sm text-muted-foreground p-2 rounded-lg bg-muted/30 border border-muted">
+                      ⚠️ Deleting your goal will remove all associated meal logs
                     </div>
                   </CardContent>
                 </Card>

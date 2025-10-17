@@ -17,6 +17,7 @@ export type Database = {
       meal_logs: {
         Row: {
           calories: number
+          goal_id: string
           id: string
           log_date: string
           logged_at: string
@@ -26,6 +27,7 @@ export type Database = {
         }
         Insert: {
           calories: number
+          goal_id: string
           id?: string
           log_date?: string
           logged_at?: string
@@ -35,6 +37,7 @@ export type Database = {
         }
         Update: {
           calories?: number
+          goal_id?: string
           id?: string
           log_date?: string
           logged_at?: string
@@ -42,7 +45,15 @@ export type Database = {
           suggestion?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "meal_logs_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "user_goals"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_goals: {
         Row: {
