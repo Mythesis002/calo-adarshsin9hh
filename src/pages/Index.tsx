@@ -14,7 +14,7 @@ import LoadingAnimation from "@/components/LoadingAnimation";
 interface Goal {
   currentWeight: number;
   targetWeight: number;
-  targetCalories: number;
+  dailyCalorieTarget: number;
   burnSuggestion?: string;
 }
 
@@ -72,7 +72,7 @@ const Index = () => {
       setUserGoal({
         currentWeight: goal.current_weight,
         targetWeight: goal.target_weight,
-        targetCalories: goal.target_calories,
+        dailyCalorieTarget: goal.target_calories,
         burnSuggestion: goal.burn_suggestion,
       });
     }
@@ -105,7 +105,7 @@ const Index = () => {
       user_id: session.user.id,
       current_weight: goal.currentWeight,
       target_weight: goal.targetWeight,
-      target_calories: goal.targetCalories,
+      target_calories: goal.dailyCalorieTarget,
       burn_suggestion: goal.burnSuggestion,
     });
 
@@ -160,7 +160,7 @@ const Index = () => {
   }
 
   const currentCalories = dailyLogs.reduce((sum, log) => sum + log.calories, 0);
-  const targetCalories = userGoal?.targetCalories || 0;
+  const targetCalories = userGoal?.dailyCalorieTarget || 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -217,7 +217,7 @@ const Index = () => {
                       Weight: <span className="font-bold text-secondary">{userGoal.currentWeight} kg</span> → <span className="font-bold text-primary">{userGoal.targetWeight} kg</span>
                     </p>
                     <p className="text-sm">
-                      Daily Target: <span className="font-bold text-accent">{userGoal.targetCalories} kcal</span>
+                      Daily Target: <span className="font-bold text-accent">{userGoal.dailyCalorieTarget} kcal</span>
                     </p>
                   </CardContent>
                 </Card>
