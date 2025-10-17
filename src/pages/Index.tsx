@@ -10,6 +10,8 @@ import { Activity, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import LoadingAnimation from "@/components/LoadingAnimation";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { getAvatarColor, getUserInitials } from "@/lib/avatarUtils";
 
 interface Goal {
   currentWeight: number;
@@ -162,63 +164,93 @@ const Index = () => {
   const currentCalories = dailyLogs.reduce((sum, log) => sum + log.calories, 0);
   const targetCalories = userGoal?.dailyCalorieTarget || 0;
 
+  const avatarColor = session?.user?.id ? getAvatarColor(session.user.id) : 'hsl(142 76% 36%)';
+  const userInitials = session?.user?.email ? getUserInitials(session.user.email) : '?';
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <header className="sticky top-0 z-10 border-b border-border/50 bg-card/50 backdrop-blur-md mb-6">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Activity className="h-8 w-8 text-primary" />
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+      <header className="sticky top-0 z-10 border-b border-border/50 bg-card/95 backdrop-blur-xl mb-4 shadow-lg">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+              <Activity className="h-6 w-6 sm:h-8 sm:w-8 text-primary shrink-0" />
+              <h1 className="text-lg sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent truncate">
                 AI Health Planner
               </h1>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="text-sm px-4 py-2 rounded-lg bg-primary/10 text-primary border border-primary/20">
-                {session.user.email}
-              </div>
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              <Avatar 
+                className="h-9 w-9 sm:h-10 sm:w-10 ring-2 ring-offset-2 ring-offset-background transition-all"
+                style={{ '--avatar-ring-color': avatarColor } as React.CSSProperties}
+              >
+                <AvatarFallback 
+                  className="text-sm sm:text-base font-bold text-white"
+                  style={{ backgroundColor: avatarColor }}
+                >
+                  {userInitials}
+                </AvatarFallback>
+              </Avatar>
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 onClick={handleSignOut}
-                className="gap-2"
+                className="gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-3 hover:bg-destructive/10 hover:text-destructive"
               >
-                <LogOut className="h-4 w-4" />
-                Sign Out
+                <LogOut className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline">Sign Out</span>
               </Button>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 pb-8">
+      <main className="max-w-7xl mx-auto px-3 sm:px-4 pb-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8 h-14 bg-muted/50 backdrop-blur-sm border border-border/50">
-            <TabsTrigger value="goal" className="text-base data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
-              🎯 Goal
+          <TabsList className="grid w-full grid-cols-3 mb-4 sm:mb-6 h-12 sm:h-14 bg-card/80 backdrop-blur-md border border-border/30 shadow-lg">
+            <TabsTrigger 
+              value="goal" 
+              className="text-xs sm:text-sm md:text-base font-semibold data-[state=active]:bg-gradient-to-br data-[state=active]:from-primary/20 data-[state=active]:to-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-[0_0_15px_hsl(var(--primary)/0.3)]"
+            >
+              <span className="hidden sm:inline">🎯 Goal</span>
+              <span className="sm:hidden">🎯</span>
             </TabsTrigger>
-            <TabsTrigger value="log" className="text-base data-[state=active]:bg-secondary/20 data-[state=active]:text-secondary" disabled={!userGoal}>
-              ✏️ Log Meal
+            <TabsTrigger 
+              value="log" 
+              className="text-xs sm:text-sm md:text-base font-semibold data-[state=active]:bg-gradient-to-br data-[state=active]:from-secondary/20 data-[state=active]:to-secondary/10 data-[state=active]:text-secondary data-[state=active]:shadow-[0_0_15px_hsl(var(--secondary)/0.3)]" 
+              disabled={!userGoal}
+            >
+              <span className="hidden sm:inline">✏️ Log Meal</span>
+              <span className="sm:hidden">✏️</span>
             </TabsTrigger>
-            <TabsTrigger value="dashboard" className="text-base data-[state=active]:bg-accent/20 data-[state=active]:text-accent" disabled={!userGoal}>
-              📊 Dashboard
+            <TabsTrigger 
+              value="dashboard" 
+              className="text-xs sm:text-sm md:text-base font-semibold data-[state=active]:bg-gradient-to-br data-[state=active]:from-accent/20 data-[state=active]:to-accent/10 data-[state=active]:text-accent data-[state=active]:shadow-[0_0_15px_hsl(var(--accent)/0.3)]" 
+              disabled={!userGoal}
+            >
+              <span className="hidden sm:inline">📊 Dashboard</span>
+              <span className="sm:hidden">📊</span>
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="goal" className="space-y-6">
+          <TabsContent value="goal" className="space-y-4 sm:space-y-6">
             {userGoal ? (
-              <div className="space-y-6">
-                <Card className="border-primary/30 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 backdrop-blur-sm">
-                  <CardHeader>
-                    <CardTitle className="text-2xl">Current Goal</CardTitle>
+              <div className="space-y-4 sm:space-y-6">
+                <Card className="border-primary/20 bg-gradient-to-br from-card via-card to-primary/5 backdrop-blur-sm shadow-xl overflow-hidden relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-50"></div>
+                  <CardHeader className="relative">
+                    <CardTitle className="text-xl sm:text-2xl font-bold">Current Goal</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-2">
-                    <p className="text-sm">
-                      Weight: <span className="font-bold text-secondary">{userGoal.currentWeight} kg</span> → <span className="font-bold text-primary">{userGoal.targetWeight} kg</span>
-                    </p>
-                    <p className="text-sm">
-                      Daily Target: <span className="font-bold text-accent">{userGoal.dailyCalorieTarget} kcal</span>
-                    </p>
+                  <CardContent className="space-y-3 relative">
+                    <div className="flex items-center gap-2 p-3 rounded-xl bg-gradient-to-r from-secondary/10 to-primary/10 border border-primary/20">
+                      <span className="text-sm sm:text-base">Weight:</span>
+                      <span className="font-bold text-secondary text-lg sm:text-xl">{userGoal.currentWeight} kg</span>
+                      <span className="text-muted-foreground">→</span>
+                      <span className="font-bold text-primary text-lg sm:text-xl">{userGoal.targetWeight} kg</span>
+                    </div>
+                    <div className="flex items-center gap-2 p-3 rounded-xl bg-gradient-to-r from-accent/10 to-secondary/10 border border-accent/20">
+                      <span className="text-sm sm:text-base">Daily Target:</span>
+                      <span className="font-bold text-accent text-lg sm:text-xl">{userGoal.dailyCalorieTarget} kcal</span>
+                    </div>
                   </CardContent>
                 </Card>
                 <GoalSetting 
