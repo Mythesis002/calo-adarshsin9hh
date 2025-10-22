@@ -6,12 +6,13 @@ import FoodLogger from "@/components/FoodLogger";
 import Dashboard from "@/components/Dashboard";
 import { Auth } from "@/components/Auth";
 import { supabase } from "@/integrations/supabase/client";
-import { Activity, LogOut, Trash2 } from "lucide-react";
+import { LogOut, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import LoadingAnimation from "@/components/LoadingAnimation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getAvatarColor, getUserInitials } from "@/lib/avatarUtils";
+import logoImage from "@/assets/logo.png";
 
 interface Goal {
   id?: string;
@@ -28,11 +29,17 @@ interface DailyLog {
   suggestion?: string;
 }
 
+interface WeeklyData {
+  date: string;
+  calories: number;
+}
+
 const Index = () => {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [userGoal, setUserGoal] = useState<Goal | null>(null);
   const [dailyLogs, setDailyLogs] = useState<DailyLog[]>([]);
+  const [weeklyData, setWeeklyData] = useState<WeeklyData[]>([]);
   const [isLLMLoading, setIsLLMLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("goal");
 
@@ -99,6 +106,39 @@ const Index = () => {
           suggestion: log.suggestion,
         }))
       );
+    }
+
+    // Load weekly data for the past 7 days
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+    const startDate = sevenDaysAgo.toISOString().split("T")[0];
+
+    const { data: weeklyLogs } = await supabase
+      .from("meal_logs")
+      .select("log_date, calories")
+      .eq("user_id", session.user.id)
+      .gte("log_date", startDate)
+      .order("log_date", { ascending: true });
+
+    if (weeklyLogs) {
+      // Group by date and sum calories
+      const caloriesByDate = weeklyLogs.reduce((acc: Record<string, number>, log) => {
+        acc[log.log_date] = (acc[log.log_date] || 0) + log.calories;
+        return acc;
+      }, {});
+
+      // Create array for all 7 days (fill missing days with 0)
+      const weekly: WeeklyData[] = [];
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        const dateStr = date.toISOString().split("T")[0];
+        weekly.push({
+          date: dateStr,
+          calories: caloriesByDate[dateStr] || 0,
+        });
+      }
+      setWeeklyData(weekly);
     }
   };
 
@@ -193,6 +233,17 @@ const Index = () => {
 
   const avatarColor = session?.user?.id ? getAvatarColor(session.user.id) : 'hsl(142 76% 36%)';
   const userInitials = session?.user?.email ? getUserInitials(session.user.email) : '?';
+  
+  // Extract first name from email
+  const getUserFirstName = (email: string): string => {
+    const username = email.split('@')[0];
+    // Remove numbers and special characters
+    const cleanName = username.replace(/[0-9_.-]/g, '');
+    // Capitalize first letter
+    return cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
+  };
+  
+  const userFirstName = session?.user?.email ? getUserFirstName(session.user.email) : 'User';
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -200,9 +251,9 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <Activity className="h-6 w-6 sm:h-8 sm:w-8 text-primary shrink-0" />
+              <img src={logoImage} alt="Logo" className="h-8 w-8 sm:h-10 sm:w-10 shrink-0" style={{ filter: 'drop-shadow(0 0 8px hsl(0 84% 60%))' }} />
               <h1 className="text-lg sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent truncate">
-                AI Health Planner
+                {userFirstName}'s Health
               </h1>
             </div>
             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
@@ -323,6 +374,7 @@ const Index = () => {
               targetCalories={targetCalories}
               burnSuggestion={userGoal?.burnSuggestion}
               logs={dailyLogs}
+              weeklyData={weeklyData}
             />
           </TabsContent>
         </Tabs>

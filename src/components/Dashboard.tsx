@@ -13,14 +13,20 @@ interface DailyLog {
   suggestion?: string;
 }
 
+interface WeeklyData {
+  date: string;
+  calories: number;
+}
+
 interface DashboardProps {
   currentCalories: number;
   targetCalories: number;
   burnSuggestion?: string;
   logs: DailyLog[];
+  weeklyData: WeeklyData[];
 }
 
-const Dashboard = ({ currentCalories, targetCalories, burnSuggestion, logs }: DashboardProps) => {
+const Dashboard = ({ currentCalories, targetCalories, burnSuggestion, logs, weeklyData }: DashboardProps) => {
   const progress = targetCalories > 0 ? (currentCalories / targetCalories) * 100 : 0;
   const remaining = Math.max(0, targetCalories - currentCalories);
   const isOnTrack = progress >= 90 && progress <= 110;
@@ -30,10 +36,21 @@ const Dashboard = ({ currentCalories, targetCalories, burnSuggestion, logs }: Da
   const totalMeals = logs.length;
   const avgCaloriesPerMeal = totalMeals > 0 ? Math.round(currentCalories / totalMeals) : 0;
 
-  // Only show today's actual data
-  const weeklyData = [
-    { day: "Today", calories: currentCalories, target: targetCalories },
-  ];
+  // Format weekly data for chart
+  const weeklyChartData = weeklyData.map((data) => {
+    const date = new Date(data.date);
+    const today = new Date().toISOString().split("T")[0];
+    const isToday = data.date === today;
+    
+    // Format day label
+    const dayLabel = isToday ? "Today" : date.toLocaleDateString('en-US', { weekday: 'short' });
+    
+    return {
+      day: dayLabel,
+      calories: data.calories,
+      target: targetCalories,
+    };
+  });
 
   // Meal distribution data
   const mealDistribution = logs.map((log, idx) => ({
@@ -152,7 +169,7 @@ const Dashboard = ({ currentCalories, targetCalories, burnSuggestion, logs }: Da
         <CardContent>
           <ChartContainer config={chartConfig} className="h-[200px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={weeklyData}>
+              <LineChart data={weeklyChartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis dataKey="day" stroke="hsl(var(--muted-foreground))" />
                 <YAxis stroke="hsl(var(--muted-foreground))" />
