@@ -6,7 +6,7 @@ import FoodLogger from "@/components/FoodLogger";
 import Dashboard from "@/components/Dashboard";
 import { Auth } from "@/components/Auth";
 import { supabase } from "@/integrations/supabase/client";
-import { LogOut, Trash2 } from "lucide-react";
+import { LogOut, Trash2, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import LoadingAnimation from "@/components/LoadingAnimation";
@@ -307,33 +307,77 @@ const Index = () => {
 
           <TabsContent value="goal" className="space-y-4 sm:space-y-6">
             {userGoal ? (
-              <Card className="border-primary/20 bg-gradient-to-br from-card via-card to-primary/5 backdrop-blur-sm shadow-xl overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-50"></div>
-                <CardHeader className="relative flex flex-row items-center justify-between">
-                  <CardTitle className="text-xl sm:text-2xl font-bold">Current Goal</CardTitle>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={handleDeleteGoal}
-                    className="gap-2 shadow-lg hover:shadow-xl transition-all"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                    <span className="hidden sm:inline">Delete Goal</span>
-                  </Button>
+              <Card className="border-primary/20 bg-gradient-to-br from-card via-card/95 to-primary/5 backdrop-blur-sm shadow-2xl overflow-hidden relative animate-fade-in">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-50"></div>
+                <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+                
+                <CardHeader className="relative z-10">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      <div className="p-4 rounded-2xl bg-gradient-to-br from-primary to-primary/80 shadow-lg">
+                        <Target className="h-8 w-8 text-primary-foreground" />
+                      </div>
+                      <div>
+                        <CardTitle className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
+                          Your Active Goal
+                        </CardTitle>
+                        <p className="text-sm text-muted-foreground mt-1">Track your progress daily</p>
+                      </div>
+                    </div>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={handleDeleteGoal}
+                      className="gap-2 shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      <span className="hidden sm:inline">Delete</span>
+                    </Button>
+                  </div>
                 </CardHeader>
-                <CardContent className="space-y-3 relative">
-                  <div className="flex items-center gap-2 p-3 rounded-xl bg-gradient-to-r from-secondary/10 to-primary/10 border border-primary/20">
-                    <span className="text-sm sm:text-base">Weight:</span>
-                    <span className="font-bold text-secondary text-lg sm:text-xl">{userGoal.currentWeight} kg</span>
-                    <span className="text-muted-foreground">→</span>
-                    <span className="font-bold text-primary text-lg sm:text-xl">{userGoal.targetWeight} kg</span>
+                
+                <CardContent className="space-y-6 relative z-10">
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="group relative p-6 rounded-2xl bg-gradient-to-br from-secondary/20 via-secondary/10 to-transparent border-2 border-secondary/30 hover:border-secondary/50 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
+                      <div className="absolute top-3 right-3 w-16 h-16 bg-secondary/20 rounded-full blur-2xl"></div>
+                      <div className="relative">
+                        <div className="text-sm font-medium text-muted-foreground mb-2">Current Weight</div>
+                        <div className="text-4xl font-bold text-secondary mb-1">{userGoal.currentWeight}</div>
+                        <div className="text-sm text-secondary/70">kilograms</div>
+                      </div>
+                    </div>
+                    
+                    <div className="group relative p-6 rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-transparent border-2 border-primary/30 hover:border-primary/50 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
+                      <div className="absolute top-3 right-3 w-16 h-16 bg-primary/20 rounded-full blur-2xl"></div>
+                      <div className="relative">
+                        <div className="text-sm font-medium text-muted-foreground mb-2">Target Weight</div>
+                        <div className="text-4xl font-bold text-primary mb-1">{userGoal.targetWeight}</div>
+                        <div className="text-sm text-primary/70">kilograms</div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 p-3 rounded-xl bg-gradient-to-r from-accent/10 to-secondary/10 border border-accent/20">
-                    <span className="text-sm sm:text-base">Daily Target:</span>
-                    <span className="font-bold text-accent text-lg sm:text-xl">{userGoal.dailyCalorieTarget} kcal</span>
+                  
+                  <div className="relative p-8 rounded-2xl bg-gradient-to-br from-accent/20 via-accent/10 to-transparent border-2 border-accent/30 shadow-lg">
+                    <div className="absolute top-4 right-4 w-24 h-24 bg-accent/20 rounded-full blur-2xl"></div>
+                    <div className="relative text-center">
+                      <div className="text-sm font-medium text-muted-foreground mb-3">Daily Calorie Target</div>
+                      <div className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-accent via-accent to-primary bg-clip-text text-transparent mb-2">
+                        {userGoal.dailyCalorieTarget}
+                      </div>
+                      <div className="text-lg text-accent/70 font-medium">calories per day</div>
+                    </div>
                   </div>
-                  <div className="text-xs sm:text-sm text-muted-foreground p-2 rounded-lg bg-muted/30 border border-muted">
-                    ⚠️ Deleting your goal will remove all associated meal logs
+                  
+                  <div className="flex items-start gap-3 p-4 rounded-xl bg-muted/50 border border-muted backdrop-blur-sm">
+                    <div className="p-2 rounded-lg bg-destructive/10">
+                      <Target className="h-4 w-4 text-destructive" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        Deleting your goal will permanently remove all associated meal logs and progress data
+                      </p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
