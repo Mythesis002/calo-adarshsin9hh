@@ -12,7 +12,6 @@ import { toast } from "sonner";
 import LoadingAnimation from "@/components/LoadingAnimation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getAvatarColor, getUserInitials } from "@/lib/avatarUtils";
-import Logo from "@/components/Logo";
 
 interface Goal {
   id?: string;
@@ -251,8 +250,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <Logo className="h-8 w-8 sm:h-10 sm:w-10 shrink-0" />
-              <h1 className="text-lg sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent truncate">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent truncate">
                 {userFirstName}'s Health
               </h1>
             </div>
@@ -284,29 +282,26 @@ const Index = () => {
 
       <main className="max-w-7xl mx-auto px-3 sm:px-4 pb-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-4 sm:mb-6 h-12 sm:h-14 bg-card/80 backdrop-blur-md border border-border/30 shadow-lg">
+          <TabsList className="grid w-full grid-cols-3 mb-4 sm:mb-6 h-auto bg-transparent border-b-2 border-border/30 rounded-none p-0 gap-0">
             <TabsTrigger 
               value="goal" 
-              className="text-xs sm:text-sm md:text-base font-semibold data-[state=active]:bg-gradient-to-br data-[state=active]:from-primary/20 data-[state=active]:to-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-[0_0_15px_hsl(var(--primary)/0.3)]"
+              className="relative text-sm sm:text-base font-semibold rounded-none border-b-2 border-transparent pb-3 pt-3 data-[state=active]:border-primary data-[state=active]:text-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none transition-all duration-200"
             >
-              <span className="hidden sm:inline">🎯 Goal</span>
-              <span className="sm:hidden">🎯</span>
+              🎯 Goal
             </TabsTrigger>
             <TabsTrigger 
               value="log" 
-              className="text-xs sm:text-sm md:text-base font-semibold data-[state=active]:bg-gradient-to-br data-[state=active]:from-secondary/20 data-[state=active]:to-secondary/10 data-[state=active]:text-secondary data-[state=active]:shadow-[0_0_15px_hsl(var(--secondary)/0.3)]" 
+              className="relative text-sm sm:text-base font-semibold rounded-none border-b-2 border-transparent pb-3 pt-3 data-[state=active]:border-secondary data-[state=active]:text-secondary data-[state=active]:bg-transparent data-[state=active]:shadow-none transition-all duration-200" 
               disabled={!userGoal}
             >
-              <span className="hidden sm:inline">✏️ Log Meal</span>
-              <span className="sm:hidden">✏️</span>
+              ✏️ Log Meal
             </TabsTrigger>
             <TabsTrigger 
               value="dashboard" 
-              className="text-xs sm:text-sm md:text-base font-semibold data-[state=active]:bg-gradient-to-br data-[state=active]:from-accent/20 data-[state=active]:to-accent/10 data-[state=active]:text-accent data-[state=active]:shadow-[0_0_15px_hsl(var(--accent)/0.3)]" 
+              className="relative text-sm sm:text-base font-semibold rounded-none border-b-2 border-transparent pb-3 pt-3 data-[state=active]:border-accent data-[state=active]:text-accent data-[state=active]:bg-transparent data-[state=active]:shadow-none transition-all duration-200" 
               disabled={!userGoal}
             >
-              <span className="hidden sm:inline">📊 Dashboard</span>
-              <span className="sm:hidden">📊</span>
+              📊 Dashboard
             </TabsTrigger>
           </TabsList>
 
