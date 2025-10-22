@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import LoadingAnimation from "@/components/LoadingAnimation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getAvatarColor, getUserInitials } from "@/lib/avatarUtils";
-import logoImage from "@/assets/logo.png";
+import Logo from "@/components/Logo";
 
 interface Goal {
   id?: string;
@@ -251,7 +251,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <img src={logoImage} alt="Logo" className="h-8 w-8 sm:h-10 sm:w-10 shrink-0" style={{ filter: 'drop-shadow(0 0 8px hsl(0 84% 60%))' }} />
+              <Logo className="h-8 w-8 sm:h-10 sm:w-10 shrink-0" />
               <h1 className="text-lg sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent truncate">
                 {userFirstName}'s Health
               </h1>
