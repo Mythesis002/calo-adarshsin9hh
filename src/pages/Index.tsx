@@ -307,43 +307,36 @@ const Index = () => {
 
           <TabsContent value="goal" className="space-y-4 sm:space-y-6">
             {userGoal ? (
-              <div className="space-y-4 sm:space-y-6">
-                <Card className="border-primary/20 bg-gradient-to-br from-card via-card to-primary/5 backdrop-blur-sm shadow-xl overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-50"></div>
-                  <CardHeader className="relative flex flex-row items-center justify-between">
-                    <CardTitle className="text-xl sm:text-2xl font-bold">Current Goal</CardTitle>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={handleDeleteGoal}
-                      className="gap-2 shadow-lg hover:shadow-xl transition-all"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                      <span className="hidden sm:inline">Delete Goal</span>
-                    </Button>
-                  </CardHeader>
-                  <CardContent className="space-y-3 relative">
-                    <div className="flex items-center gap-2 p-3 rounded-xl bg-gradient-to-r from-secondary/10 to-primary/10 border border-primary/20">
-                      <span className="text-sm sm:text-base">Weight:</span>
-                      <span className="font-bold text-secondary text-lg sm:text-xl">{userGoal.currentWeight} kg</span>
-                      <span className="text-muted-foreground">→</span>
-                      <span className="font-bold text-primary text-lg sm:text-xl">{userGoal.targetWeight} kg</span>
-                    </div>
-                    <div className="flex items-center gap-2 p-3 rounded-xl bg-gradient-to-r from-accent/10 to-secondary/10 border border-accent/20">
-                      <span className="text-sm sm:text-base">Daily Target:</span>
-                      <span className="font-bold text-accent text-lg sm:text-xl">{userGoal.dailyCalorieTarget} kcal</span>
-                    </div>
-                    <div className="text-xs sm:text-sm text-muted-foreground p-2 rounded-lg bg-muted/30 border border-muted">
-                      ⚠️ Deleting your goal will remove all associated meal logs
-                    </div>
-                  </CardContent>
-                </Card>
-                <GoalSetting 
-                  onGoalSet={handleGoalSet}
-                  isLoading={isLLMLoading}
-                  setIsLoading={setIsLLMLoading}
-                />
-              </div>
+              <Card className="border-primary/20 bg-gradient-to-br from-card via-card to-primary/5 backdrop-blur-sm shadow-xl overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-50"></div>
+                <CardHeader className="relative flex flex-row items-center justify-between">
+                  <CardTitle className="text-xl sm:text-2xl font-bold">Current Goal</CardTitle>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={handleDeleteGoal}
+                    className="gap-2 shadow-lg hover:shadow-xl transition-all"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    <span className="hidden sm:inline">Delete Goal</span>
+                  </Button>
+                </CardHeader>
+                <CardContent className="space-y-3 relative">
+                  <div className="flex items-center gap-2 p-3 rounded-xl bg-gradient-to-r from-secondary/10 to-primary/10 border border-primary/20">
+                    <span className="text-sm sm:text-base">Weight:</span>
+                    <span className="font-bold text-secondary text-lg sm:text-xl">{userGoal.currentWeight} kg</span>
+                    <span className="text-muted-foreground">→</span>
+                    <span className="font-bold text-primary text-lg sm:text-xl">{userGoal.targetWeight} kg</span>
+                  </div>
+                  <div className="flex items-center gap-2 p-3 rounded-xl bg-gradient-to-r from-accent/10 to-secondary/10 border border-accent/20">
+                    <span className="text-sm sm:text-base">Daily Target:</span>
+                    <span className="font-bold text-accent text-lg sm:text-xl">{userGoal.dailyCalorieTarget} kcal</span>
+                  </div>
+                  <div className="text-xs sm:text-sm text-muted-foreground p-2 rounded-lg bg-muted/30 border border-muted">
+                    ⚠️ Deleting your goal will remove all associated meal logs
+                  </div>
+                </CardContent>
+              </Card>
             ) : (
               <GoalSetting 
                 onGoalSet={handleGoalSet}
