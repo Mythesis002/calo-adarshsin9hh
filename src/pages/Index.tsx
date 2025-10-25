@@ -287,21 +287,21 @@ const Index = () => {
               value="goal" 
               className="relative text-sm sm:text-base font-semibold rounded-none border-b-2 border-transparent pb-3 pt-3 data-[state=active]:border-primary data-[state=active]:text-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none transition-all duration-200"
             >
-              🎯 Goal
+              Goal
             </TabsTrigger>
             <TabsTrigger 
               value="log" 
               className="relative text-sm sm:text-base font-semibold rounded-none border-b-2 border-transparent pb-3 pt-3 data-[state=active]:border-secondary data-[state=active]:text-secondary data-[state=active]:bg-transparent data-[state=active]:shadow-none transition-all duration-200" 
               disabled={!userGoal}
             >
-              ✏️ Log Meal
+              Log Meal
             </TabsTrigger>
             <TabsTrigger 
               value="dashboard" 
               className="relative text-sm sm:text-base font-semibold rounded-none border-b-2 border-transparent pb-3 pt-3 data-[state=active]:border-accent data-[state=active]:text-accent data-[state=active]:bg-transparent data-[state=active]:shadow-none transition-all duration-200" 
               disabled={!userGoal}
             >
-              📊 Dashboard
+              Dashboard
             </TabsTrigger>
           </TabsList>
 
