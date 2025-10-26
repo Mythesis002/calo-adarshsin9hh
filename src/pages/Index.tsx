@@ -65,6 +65,32 @@ const Index = () => {
     }
   }, [session]);
 
+  // Real-time subscription for meal logs
+  useEffect(() => {
+    if (!session?.user) return;
+
+    const channel = supabase
+      .channel('meal_logs_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'meal_logs',
+          filter: `user_id=eq.${session.user.id}`,
+        },
+        () => {
+          // Reload data when any change occurs
+          loadUserData();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [session]);
+
   const loadUserData = async () => {
     if (!session?.user) return;
 
