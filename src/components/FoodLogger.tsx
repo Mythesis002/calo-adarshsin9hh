@@ -67,111 +67,87 @@ const FoodLogger = ({
 
   return (
     <div className="space-y-4">
-      {/* Meal Logging Card - Now at the top */}
-      <Card className="border-accent/20 bg-gradient-to-br from-card via-card/95 to-accent/5 backdrop-blur-sm shadow-xl overflow-hidden relative animate-fade-in">
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-primary/5 opacity-50"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
-        
-        <CardHeader className="space-y-1 relative z-10">
-          <div className="flex items-center gap-4">
-            <div className="p-4 rounded-2xl bg-gradient-to-br from-accent to-accent/80 shadow-lg">
-              <Sparkles className="h-6 w-6 text-primary-foreground" />
+      {/* Meal Logging Card */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-accent/10">
+              <Sparkles className="h-5 w-5 text-accent" />
             </div>
             <div>
-              <CardTitle className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-accent via-primary to-secondary bg-clip-text text-transparent">
-                Log Your Meal
-              </CardTitle>
-              <CardDescription className="text-base mt-1">
-                Describe what you ate - AI will calculate calories instantly!
-              </CardDescription>
+              <CardTitle className="text-xl font-semibold">Log Your Meal</CardTitle>
+              <CardDescription>Describe what you ate and AI will estimate calories</CardDescription>
             </div>
           </div>
         </CardHeader>
         
-        <CardContent className="space-y-4 relative z-10">
+        <CardContent className="space-y-4">
           {isLoading ? (
             <div className="py-12">
               <LoadingAnimation />
             </div>
           ) : (
             <>
-              <div className="relative">
-                <Textarea
-                  placeholder="e.g., 'Had 2 rotis with dal and aloo sabzi for lunch' or '1 extra roti with palak paneer'"
-                  value={mealDescription}
-                  onChange={(e) => setMealDescription(e.target.value)}
-                  className="min-h-[140px] text-base resize-none border-2 border-accent/20 focus:border-accent/50 bg-background/50 backdrop-blur-sm shadow-inner rounded-xl"
-                  disabled={isLoading}
-                />
-              </div>
+              <Textarea
+                placeholder="e.g., 'Had 2 rotis with dal and aloo sabzi for lunch' or '1 extra roti with palak paneer'"
+                value={mealDescription}
+                onChange={(e) => setMealDescription(e.target.value)}
+                className="min-h-[120px] resize-none"
+                disabled={isLoading}
+              />
               
               <Button
                 onClick={handleLogMeal}
-                className="w-full text-lg py-7 bg-gradient-to-r from-accent via-primary to-secondary hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] shadow-lg group"
+                className="w-full"
                 size="lg"
                 disabled={isLoading}
               >
-                <Plus className="mr-2 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
+                <Plus className="mr-2 h-5 w-5" />
                 Log Meal with AI
               </Button>
-
-              <div className="flex items-start gap-3 p-4 rounded-xl bg-muted/50 border border-muted backdrop-blur-sm">
-                <div className="p-2 rounded-lg bg-accent/10">
-                  <Target className="h-4 w-4 text-accent" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Simply describe your meal naturally. Our AI will identify the food items and estimate calories for you.
-                  </p>
-                </div>
-              </div>
             </>
           )}
         </CardContent>
       </Card>
 
-      {/* Calorie Progress Overview - Now below, more compact */}
-      <Card className="border-primary/20 bg-gradient-to-br from-card via-card/95 to-primary/5 backdrop-blur-sm shadow-lg overflow-hidden relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-50"></div>
-        
-        <CardHeader className="relative z-10 pb-3">
+      {/* Calorie Progress */}
+      <Card>
+        <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="p-3 rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-md">
-              <TrendingUp className="h-5 w-5 text-primary-foreground" />
+            <div className="p-2 rounded-lg bg-primary/10">
+              <TrendingUp className="h-5 w-5 text-primary" />
             </div>
-            <CardTitle className="text-xl font-bold">Today's Progress</CardTitle>
+            <CardTitle className="text-xl font-semibold">Today's Progress</CardTitle>
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-4 relative z-10">
-          <div className="grid sm:grid-cols-3 gap-3">
-            <div className="p-4 rounded-xl bg-gradient-to-br from-secondary/20 via-secondary/10 to-transparent border border-secondary/30">
-              <div className="text-xs font-medium text-muted-foreground mb-1">Current</div>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-3 gap-3">
+            <div className="text-center">
+              <div className="text-xs text-muted-foreground mb-1">Current</div>
               <div className="text-2xl font-bold text-secondary">{currentCalories}</div>
-              <div className="text-xs text-secondary/70">kcal</div>
+              <div className="text-xs text-muted-foreground">kcal</div>
             </div>
 
-            <div className="p-4 rounded-xl bg-gradient-to-br from-accent/20 via-accent/10 to-transparent border border-accent/30">
-              <div className="text-xs font-medium text-muted-foreground mb-1">Remaining</div>
+            <div className="text-center">
+              <div className="text-xs text-muted-foreground mb-1">Remaining</div>
               <div className="text-2xl font-bold text-accent">{remainingCalories > 0 ? remainingCalories : 0}</div>
-              <div className="text-xs text-accent/70">kcal</div>
+              <div className="text-xs text-muted-foreground">kcal</div>
             </div>
 
-            <div className="p-4 rounded-xl bg-gradient-to-br from-primary/20 via-primary/10 to-transparent border border-primary/30">
-              <div className="text-xs font-medium text-muted-foreground mb-1">Target</div>
+            <div className="text-center">
+              <div className="text-xs text-muted-foreground mb-1">Target</div>
               <div className="text-2xl font-bold text-primary">{targetCalories}</div>
-              <div className="text-xs text-primary/70">kcal</div>
+              <div className="text-xs text-muted-foreground">kcal</div>
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-medium text-muted-foreground">Progress</span>
-                <span className="font-bold text-primary">{Math.min(Math.round(calorieProgress), 100)}%</span>
-              </div>
-              <Progress value={Math.min(calorieProgress, 100)} className="h-2" />
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Progress</span>
+              <span className="font-semibold">{Math.min(Math.round(calorieProgress), 100)}%</span>
             </div>
+            <Progress value={Math.min(calorieProgress, 100)} className="h-2" />
           </div>
         </CardContent>
       </Card>
