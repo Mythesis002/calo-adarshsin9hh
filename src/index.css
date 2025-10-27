@@ -18,10 +18,10 @@ All colors MUST be HSL.
     --popover: 0 0% 10%;
     --popover-foreground: 0 0% 98%;
 
-    /* Vibrant red for Calo branding */
-    --primary: 0 85% 55%;
+    /* Vibrant neon green (Apple Fitness Move ring) */
+    --primary: 142 76% 36%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 0 85% 65%;
+    --primary-glow: 142 76% 46%;
 
     /* Electric cyan (Apple Fitness Exercise ring) */
     --secondary: 180 100% 50%;
@@ -40,23 +40,23 @@ All colors MUST be HSL.
 
     --border: 0 0% 18%;
     --input: 0 0% 15%;
-    --ring: 0 85% 55%;
+    --ring: 142 76% 36%;
 
     --radius: 1.25rem;
 
     /* Additional fitness ring colors */
-    --ring-move: 0 85% 55%;
+    --ring-move: 142 76% 36%;
     --ring-exercise: 180 100% 50%;
     --ring-stand: 330 100% 60%;
     --ring-calories: 25 95% 53%;
 
     /* Vibrant gradients */
-    --gradient-move: linear-gradient(135deg, hsl(0 85% 55%) 0%, hsl(0 85% 65%) 100%);
+    --gradient-move: linear-gradient(135deg, hsl(142 76% 36%) 0%, hsl(142 76% 46%) 100%);
     --gradient-exercise: linear-gradient(135deg, hsl(180 100% 50%) 0%, hsl(190 100% 60%) 100%);
     --gradient-stand: linear-gradient(135deg, hsl(330 100% 60%) 0%, hsl(340 100% 70%) 100%);
 
     /* Glowing shadows */
-    --shadow-glow-red: 0 0 30px hsl(0 85% 55% / 0.4);
+    --shadow-glow-green: 0 0 30px hsl(142 76% 36% / 0.4);
     --shadow-glow-cyan: 0 0 30px hsl(180 100% 50% / 0.4);
     --shadow-glow-pink: 0 0 30px hsl(330 100% 60% / 0.4);
 
