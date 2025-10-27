@@ -51,10 +51,10 @@ export const Auth = () => {
       <Card className="w-full max-w-md border-border/50 bg-card/50 backdrop-blur-sm">
         <CardHeader className="space-y-1">
           <CardTitle className="text-3xl font-bold text-center bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            AI Health Planner
+            Calo
           </CardTitle>
           <CardDescription className="text-center">
-            Track your nutrition and reach your goals
+            Track Smart, Eat Right
           </CardDescription>
         </CardHeader>
         <CardContent>
