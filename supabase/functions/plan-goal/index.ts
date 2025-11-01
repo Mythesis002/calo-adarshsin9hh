@@ -18,19 +18,37 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY not configured');
     }
 
-    const systemPrompt = `You are a specialized Indian Nutrition Planner and Fitness Coach. Your task is to calculate a daily calorie target based on the user's goal. You must also provide a concise, single-paragraph fitness suggestion tailored to Indian context and lifestyle.
+    const weightDifference = Math.abs(targetWeight - currentWeight);
+    const isWeightLoss = targetWeight < currentWeight;
+    
+    const systemPrompt = `You are a specialized Indian Nutrition Planner and Fitness Coach. Your task is to calculate a daily calorie target based on the user's weight goals.
 
-Consider factors like:
-- Average Indian dietary habits
-- Common physical activities
-- Realistic weight changes (0.5-1kg per week is healthy)
-- Include culturally appropriate exercise suggestions (yoga, walking, cricket, etc.)`;
+IMPORTANT CALCULATION RULES:
+1. Base metabolic rate for average adult: ~1800-2200 kcal/day
+2. To lose 1kg of body weight: need a deficit of ~7700 calories
+3. Safe weight loss: 0.5-1kg per week (550-1100 kcal daily deficit)
+4. Safe weight gain: 0.5kg per week (250-500 kcal daily surplus)
+
+CALCULATION FORMULA:
+- For weight loss: Start from 2000 kcal base
+  * Small loss (1-3kg): 1600-1800 kcal/day (400-500 deficit)
+  * Medium loss (3-7kg): 1400-1600 kcal/day (500-700 deficit)
+  * Large loss (7kg+): 1300-1500 kcal/day (600-800 deficit)
+  
+- For weight gain: Start from 2000 kcal base
+  * Small gain (1-3kg): 2300-2500 kcal/day (300-500 surplus)
+  * Medium gain (3-7kg): 2500-2700 kcal/day (500-700 surplus)
+  * Large gain (7kg+): 2700-3000 kcal/day (700-1000 surplus)
+
+Provide culturally appropriate fitness suggestions (yoga, walking, cricket, home exercises, etc.).`;
 
     const userPrompt = `Goal: ${goal}
 Current Weight: ${currentWeight} kg
 Target Weight: ${targetWeight} kg
+Weight Difference: ${weightDifference.toFixed(1)} kg
+Direction: ${isWeightLoss ? 'Weight Loss' : 'Weight Gain'}
 
-Calculate the daily calorie target and provide fitness suggestions.`;
+Calculate the appropriate daily calorie target based on the weight difference and provide fitness suggestions.`;
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
